@@ -2,20 +2,21 @@ import psycopg2
 import os
 import sys
 from configparser import ConfigParser
+from typing import Any
 
 
 #Configures python interpreter to find built-in modules and enable import statements
-project_root: str= os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(project_root)
+PROJECT_ROOT: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(PROJECT_ROOT)
 
 
 from utils.logger import Logger
 
 
 #returns 'directory_name/file_name.py' in final_file_name
-directory_name, file_name= os.path.split(__file__)
-_, directory_name= os.path.split(directory_name)
-final_file_name= os.path.join(directory_name,file_name)
+directory_name: str; file_name: str = os.path.split(__file__)
+_:str; directory_name:str = os.path.split(directory_name)
+final_file_name: str = os.path.join(directory_name,file_name)
 
 
 #create log object from Logger class
@@ -24,8 +25,8 @@ logger1= Logger(final_file_name)
 
 
 #Absolute path of the config file for PostgresSQL database
-file_name= os.path.abspath(os.path.dirname(__file__))
-fpath= os.path.join(file_name,'database.ini')
+file_name: str = os.path.abspath(os.path.dirname(__file__))
+fpath: str = os.path.join(file_name,'database.ini')
 
 
 #Docstring describes the breakdown of the 'config' function code.
@@ -52,12 +53,12 @@ def config(filename=fpath, section="postgresql"):
 
 '''
 
-def config(filename=fpath, section="postgresql"):
-    parser= ConfigParser()
+def config(filename: str = fpath, section: str = "postgresql") -> dict:
+    parser = ConfigParser()
     parser.read(filename)
-    db= {}
+    db: dict = {}
     if parser.has_section(section):
-        params= parser.items(section) 
+        params: list[tuple[str, str]] = parser.items(section) 
         for param in params:             
             db[param[0]]= param[1] 
     else:
@@ -66,13 +67,13 @@ def config(filename=fpath, section="postgresql"):
  
 
 
-def connect() -> tuple[psycopg2.extensions.cursor, psycopg2.extensions.connection]:  
+def connect() -> list[psycopg2.extensions.cursor, psycopg2.extensions.connection]:  
     conn = None
     try:
-        params= config()
+        params: dict = config()
         logger1.get_log().info("Configuration to PostgreSQL successful.")
-        conn= psycopg2.connect(**params) #connect to db, returns connect object.
-        cur= conn.cursor() #creates cursor, returns cursor object. Allows us to execute SQL syntax via Python code.
+        conn = psycopg2.connect(**params) #connect to db, returns connect object.
+        cur = conn.cursor() #creates cursor, returns cursor object. Allows us to execute SQL syntax via Python code.
         logger1.get_log().info("Connection to database is now open.")
         return cur, conn
     except(Exception, psycopg2.DatabaseError) as e:
@@ -102,8 +103,8 @@ def close_connect(cur: psycopg2.extensions.cursor, conn: psycopg2.extensions.con
         logger1.get_log().info("Connection to database is now close.")
 
 
-def main():
-    cur, conn= connect()
+def main() -> None:
+    cur: psycopg2.extensions.cursor;  conn: psycopg2.extensions.connection = connect()
     close_connect(cur, conn)
 
 

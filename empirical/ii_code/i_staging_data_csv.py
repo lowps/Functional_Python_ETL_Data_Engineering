@@ -7,8 +7,8 @@ import urllib.request
 
 
 #Configures python interpreter to find built-in modules and enable import statements
-project_root: str= os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(project_root)
+PROJECT_ROOT: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(PROJECT_ROOT)
 
 #import modules from sibling directories 
 from config.connect_db import connect 
@@ -16,9 +16,9 @@ from utils.logger import Logger
 
 
 #returns 'directory_name/file_name.py' in final_file_name
-directory_name, file_name= os.path.split(__file__)
-_, directory_name= os.path.split(directory_name)
-final_file_name= os.path.join(directory_name,file_name)
+directory_name: str; file_name: str = os.path.split(__file__)
+_: str; directory_name: str = os.path.split(directory_name)
+final_file_name: str = os.path.join(directory_name,file_name)
 
 #create log object from Logger class
 #log messages are formatted to contain 'directory/file_name.py' in the configured stdout.
@@ -30,13 +30,13 @@ Define the directory where to ingest raw data.
 In future make this portion of code more re-usable with REGEX and parsing instead of 
 manually typing in 'churn_modelling.csv' 
 '''
-dest_folder1: str= os.path.dirname(os.path.dirname(__file__))
-dest_folder2: str= os.path.join(dest_folder1, 'i_data', 'external')
-dest_path: str= f'{dest_folder2}/churn_modelling.csv'
+dest_folder1: str = os.path.dirname(os.path.dirname(__file__))
+dest_folder2: str = os.path.join(dest_folder1, 'i_data', 'external')
+dest_path: str = f'{dest_folder2}/churn_modelling.csv'
 
 
 #url
-url: str= "https://raw.githubusercontent.com/lowps/datasets/master/Churn_Modelling.csv"
+url: str = "https://raw.githubusercontent.com/lowps/datasets/master/Churn_Modelling.csv"
 
 
 
@@ -60,7 +60,7 @@ def download_data_from_url(url: str, destination_folder: str) -> None:
         logger1.get_log().error(f'Error while downloading the csv file due to: {e}')
         traceback.print_exc()
 
-def main():
+def main() -> None:
     download_data_from_url(url, dest_folder2)
 
 

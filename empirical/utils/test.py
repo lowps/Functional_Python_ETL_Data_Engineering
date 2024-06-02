@@ -14,6 +14,8 @@ Reminder to self:
         each functions and transfer them over when you call them.
     3)
 
+   
+
 
 '''
 
@@ -208,7 +210,7 @@ def main():
 
 if __name__ == '__main__':
     main()
-    
+    print(type(PROJECT_ROOT))
 
 
 

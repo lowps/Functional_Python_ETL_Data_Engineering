@@ -4,8 +4,8 @@ import psycopg2
 
 
 #Configures python interpreter to find built-in modules and enable import statements
-project_root: str= os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.append(project_root)
+PROJECT_ROOT: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(PROJECT_ROOT)
 
 
 #import modules from sibling directories 
@@ -17,9 +17,9 @@ from utils.logger import Logger
 
 
 #returns 'directory_name/file_name.py' in final_file_name
-directory_name, file_name= os.path.split(__file__)
-_, directory_name= os.path.split(directory_name)
-final_file_name= os.path.join(directory_name,file_name)
+directory_name: str; file_name:str = os.path.split(__file__)
+_: str; directory_name: str = os.path.split(directory_name)
+final_file_name: str = os.path.join(directory_name,file_name)
 
 #create log object from Logger class
 #log messages are formatted to contain 'directory/file_name.py' in the configured stdout.
@@ -34,8 +34,8 @@ Arg:
     conn- connection to database server.
     cur- connection cursor to the database.
 """
-def drop_tables():
-    cur, conn= connect()
+def drop_tables() -> None:
+    cur: psycopg2.extensions.cursor;  conn: psycopg2.extensions.connection = connect()
     cur.execute("DROP TABLE IF EXISTS churn_modelling")
     logger1.get_log().info("churn_modelling table successfully dropped.")
     close_connect(cur, conn)
@@ -45,9 +45,9 @@ def drop_tables():
 
 
 #Purpose: create postgreSQL table with desired schema
-def create_tables():
+def create_tables() -> None:
     try:
-        cur, conn= connect()
+        cur: psycopg2.extensions.cursor;  conn: psycopg2.extensions.connection = connect()
         cur.execute("""CREATE TABLE IF NOT EXISTS churn_modelling (RowNumber INTEGER PRIMARY KEY, 
                     CustomerId INTEGER, 
                     Surname VARCHAR(50), 
@@ -71,7 +71,7 @@ def create_tables():
         logger1.get_log().info("Connection to database is now close.")
 
 
-def main():
+def main() -> None:
     drop_tables()
     create_tables()
 

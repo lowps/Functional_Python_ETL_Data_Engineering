@@ -8,7 +8,7 @@ import warnings
 """
 Allows Python interpreter to find config and connect modules.
 """
-PROJECT_ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(PROJECT_ROOT)
 
 from config.connect_db import config
@@ -20,25 +20,26 @@ from utils.logger import Logger
 '''
 Outputs 'directory/python_script.py' name that invoked the log message.
 '''
-directory_name, file_name= os.path.split(__file__)
-directory_name, file_name2= os.path.split(directory_name)
-final_file_name= os.path.join(file_name2,file_name)
-logger1= Logger(final_file_name)
+directory_name: str; file_name: str = os.path.split(__file__)
+directory_name: str; file_name2: str = os.path.split(directory_name)
+final_file_name: str = os.path.join(file_name2,file_name)
+logger1 = (final_file_name)
 
-'''
-Purpose:
-    create the df and push the df to a postgres table.
-Arg:
-    conn- connection to database server.
-    cur- connection cursor to the database.
-'''
-def push_df_postgres():
-    fpath= os.path.join(os.path.abspath('..'), '0_data', 'external', 'churn_modelling.csv')
-    df= pd.read_csv(fpath)
+
+def push_df_postgres() -> None:
+    '''
+    Purpose:
+        create the df and push the df to a postgres table.
+    Arg:
+        conn- connection to database server.
+        cur- connection cursor to the database.
+    '''
+    fpath: str = os.path.join(os.path.abspath('..'), '0_data', 'external', 'churn_modelling.csv')
+    df: pd.DataFrame = pd.read_csv(fpath)
 
     #Open cursor and database connection
-    cur, conn = connect()
-    inserted_row_count= 0
+    cur: psycopg2.extensions.cursor;  conn: psycopg2.extensions.connection = connect()
+    inserted_row_count: int = 0
 
     for _, row in df.iterrows():
         count_query= f"""SELECT COUNT(*) FROM churn_modelling WHERE RowNumber = {row['RowNumber']}"""
