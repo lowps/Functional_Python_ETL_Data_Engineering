@@ -16,13 +16,13 @@ from utils.logger import Logger
 
 
 #returns 'directory_name/file_name.py' in final_file_name
-directory_name: str; file_name: str = os.path.split(__file__)
-_: str; directory_name: str = os.path.split(directory_name)
-final_file_name: str = os.path.join(directory_name,file_name)
+directory_name, file_name = os.path.split(__file__)
+_, directory_name = os.path.split(directory_name)
+final_file_name = os.path.join(directory_name,file_name)
 
 #create log object from Logger class
 #log messages are formatted to contain 'directory/file_name.py' in the configured stdout.
-logger1= Logger(final_file_name)
+logger1 = Logger(final_file_name)
 
 
 '''
@@ -65,4 +65,8 @@ def main() -> None:
 
 
 if __name__ == '__main__':
-    main()
+    # main()
+    dest_folder1: str = os.path.dirname(os.path.dirname(__file__))
+    dest_folder2: str = os.path.join(dest_folder1, 'i_data', 'external')
+    print(dest_folder2)
+    

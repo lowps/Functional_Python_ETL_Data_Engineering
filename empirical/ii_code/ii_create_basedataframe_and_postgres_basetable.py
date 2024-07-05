@@ -4,7 +4,7 @@ import psycopg2
 
 
 #Configures python interpreter to find built-in modules and enable import statements
-PROJECT_ROOT: str = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(PROJECT_ROOT)
 
 
@@ -17,9 +17,9 @@ from utils.logger import Logger
 
 
 #returns 'directory_name/file_name.py' in final_file_name
-directory_name: str; file_name:str = os.path.split(__file__)
-_: str; directory_name: str = os.path.split(directory_name)
-final_file_name: str = os.path.join(directory_name,file_name)
+directory_name, file_name = os.path.split(__file__)
+_, directory_name = os.path.split(directory_name)
+final_file_name = os.path.join(directory_name,file_name)
 
 #create log object from Logger class
 #log messages are formatted to contain 'directory/file_name.py' in the configured stdout.
@@ -77,4 +77,5 @@ def main() -> None:
 
 if __name__ == '__main__':
     main()
+    
 
