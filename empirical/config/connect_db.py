@@ -59,10 +59,10 @@ def connect():
         cur = conn.cursor() #creates cursor, returns cursor object. Allows us to execute SQL syntax via Python code.
         logger1.get_log().info("Connection to database is now open.")
         return cur, conn
-    except:
+    except Exception as e:
         logger1.get_log().error(f"Error creating database or retrieving associated connection and cursor")
         logger1.get_log().info("Configuration to PostgreSQL unsuccessful.")
-        raise Exception("Error in attempting to activate cursor or connection state in respects to Database")
+        raise Exception(f"Error in attempting to activate cursor or connection state in respects to Database")
     # finally:
     #     # Closes connection if its open
     #     if conn is not None:

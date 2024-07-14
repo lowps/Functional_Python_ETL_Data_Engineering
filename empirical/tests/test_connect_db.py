@@ -187,7 +187,8 @@ class Connect_Db_Functions(unittest.TestCase):
         mock_ConfigParser.items.assert_called_once_with(section)
 
    
-    @unittest.skip('skipping for now')
+     
+    @unittest.skip('skip')
     @patch('config.connect_db.ConfigParser', spec_set = True, autospec = True)
     def test_config_exception_raised(self, mock_ConfigParser, filename = '/Users/ericklopez/Desktop/Functional_Python_ETL_Data_Engineering/empirical/config/database.ini', section = 'non_existent_section'):
         #configure expected values of target class "ConfigParser()" methods 'read', 'has_section'
@@ -253,10 +254,9 @@ class Connect_Db_Functions(unittest.TestCase):
             )
             #verifies 'mock_psycopg2.connect()' called with correct dict values thus verifies expected behaviour
 
-    
     @unittest.skip('skip')
     @patch('config.connect_db.config', spec_set = True, autospec = True)
-    @patch('config.connect_db.psycopg2', spec_set = True, autospec=True)
+    @patch('config.connect_db.psycopg2', spec_set = True, autospec = True)
     def test_connect_exception(self, mock_psycopg2, mock_config):
         #configure 'mock_config' and 'mock_psycopg2' return_values
         mock_config.return_value = {

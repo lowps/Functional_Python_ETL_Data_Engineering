@@ -50,23 +50,21 @@ def download_data_from_url(url: str, destination_folder: str) -> None:
     :param destination_folder: A directory path, that indicates the location the flat file will be downloaded to
     """
     if not os.path.exists(str(dest_folder2)):
-        # create folder if it doesnt exist
+        # create folder if it doesnt exist (NOT exists)
         os.makedirs(str(dest_folder2))
     try:
         urllib.request.urlretrieve(url, dest_path)
-        # print(f'csv file downloaded successfully to {dest_folder2}')
         logger1.get_log().info(f'csv file downloaded successfully to {dest_folder2}')
     except Exception as e:
         logger1.get_log().error(f'Error while downloading the csv file due to: {e}')
         traceback.print_exc()
+        raise Exception("Error while downloading the csv file")
 
 def main() -> None:
     download_data_from_url(url, dest_folder2)
 
 
 if __name__ == '__main__':
-    # main()
-    dest_folder1: str = os.path.dirname(os.path.dirname(__file__))
-    dest_folder2: str = os.path.join(dest_folder1, 'i_data', 'external')
-    print(dest_folder2)
+    main()
+     
     
