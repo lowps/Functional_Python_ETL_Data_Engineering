@@ -126,8 +126,24 @@ class Download_Data_From_Url(unittest.TestCase):
         mock_os_path_exists.assert_called_once_with(destination_folder)
         mock_os_makedirs.assert_called_once_with(destination_folder)
 
-        
-        
+    
+    @unittest.skip("finished")
+    @patch('ii_code.i_staging_data_csv.download_data_from_url', spec_set = True, autospec = True)
+    def test_main(self, mock_download_data_from_url):
+        #import 'main' function after patches to ensure it uses the mock function
+        from ii_code.i_staging_data_csv import main
+
+        #configure 'url' and 'dest_folder2' parameters for 'download_data_from_url(url, dest_folder2)'
+        url = "https://raw.githubusercontent.com/lowps/datasets/master/Churn_Modelling.csv"
+        destination_folder = "/Users/ericklopez/Desktop/Functional_Python_ETL_Data_Engineering/empirical/i_data/external"
+
+
+        #execute target code
+        result = main()
+
+        #assertions
+        mock_download_data_from_url.assert_called_once_with(url, destination_folder)
+        self.assertIsNone(result)
 
 
 

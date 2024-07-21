@@ -35,19 +35,28 @@ Arg:
     cur- connection cursor to the database.
 """
 def drop_tables() -> None:
-    cur: psycopg2.extensions.cursor;  conn: psycopg2.extensions.connection = connect()
-    cur.execute("DROP TABLE IF EXISTS churn_modelling")
-    logger1.get_log().info("churn_modelling table successfully dropped.")
-    close_connect(cur, conn)
-    logger1.get_log().info("Database cursor is now close.")
-    logger1.get_log().info("Connection to database is now close.")
+    cur, conn = None, None
+    try:
+        cur, conn = connect()
+        cur.execute("DROP TABLE IF EXISTS churn_modelling")
+        logger1.get_log().info("churn_modelling table successfully dropped.")
+    except:
+        logger1.get_log().error("Error creating cursor and connection object")
+        raise
+    finally:
+        close_connect(cur, conn)
+        logger1.get_log().info("Database cursor is now close.")
+        logger1.get_log().info("Connection to database is now close.")
+        #finally statement, this ensures that the connection and cursor are closed properly, 
+        #and the log messages are recorded, regardless of whether an exception was raised.
 
 
 
 #Purpose: create postgreSQL table with desired schema
 def create_tables() -> None:
+    cur, conn = None, None
     try:
-        cur: psycopg2.extensions.cursor;  conn: psycopg2.extensions.connection = connect()
+        cur, conn = connect()
         cur.execute("""CREATE TABLE IF NOT EXISTS churn_modelling (RowNumber INTEGER PRIMARY KEY, 
                     CustomerId INTEGER, 
                     Surname VARCHAR(50), 
@@ -62,9 +71,10 @@ def create_tables() -> None:
                     IsActiveMember INTEGER, 
                     EstimatedSalary FLOAT, 
                     Exited INTEGER)""")
-        logger1.get_log().info(' New Table churn_modelling created successfully to postgres server')
+        logger1.get_log().info('New Table churn_modelling created successfully to postgres server')
     except:
-        logger1.get_log().warning('Unsuccessful creation of tables with specified schema')
+        logger1.get_log().error('Unsuccessful creation of tables with specified schema')
+        raise
     finally:
         close_connect(cur, conn)
         logger1.get_log().info("Database cursor is now close.")

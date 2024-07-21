@@ -324,6 +324,27 @@ class Connect_Db_Functions(unittest.TestCase):
         self.assertIsInstance(mock_connect, psycopg2.extensions.connection)
 
 
+    @unittest.skip('skip')
+    @patch('config.connect_db.close_connect', spec_set = True, autospec = True)
+    @patch('config.connect_db.connect', spec_set = True, autospec = True)
+    def test_main(self, mock_connect, mock_close_connect):
+        #import main function after patches to ensure it uses the mock function
+        from config.connect_db import main
+
+        #configure 'cursor' and 'connect' objects
+        mock_cursor_object = MagicMock(spec_set = psycopg2.extensions.cursor)
+        mock_connect_object = MagicMock(spec_set = psycopg2.extensions.connection)
+
+        #configure return_value of 'connect()' method
+        mock_connect.return_value = (mock_cursor_object, mock_connect_object)
+
+        #execute the target code
+        main()
+
+        #assertions
+        mock_connect.assert_called_once()
+        mock_close_connect.assert_called_once_with(mock_cursor_object, mock_connect_object)
+
 if __name__ == "__main__": 
     unittest.main()
     
