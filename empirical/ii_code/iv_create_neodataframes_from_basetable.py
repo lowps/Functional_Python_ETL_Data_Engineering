@@ -102,6 +102,10 @@ def create_neo_base_df() -> pd.DataFrame:
         df['creditscore'] = df['creditscore'].fillna(value=median_creditscore)
 
         return df
+    
+    except:
+        logger1.get_log().error("Error creating tables")
+        raise
                   
     
     finally:
